@@ -62,7 +62,7 @@ const command: Command = {
         portfolio.stocks = portfolio.stocks.filter(stock => stock.amount > 0);
 
         client.savePortfolio(user.id, portfolio);
-        return msg.reply(`You sold ${amount} of your shares of ${stockInfo.name} for \$${totalPrice}. You made a ${totalProfit < 0 ? 'loss' : 'profit'} of \$${Math.abs(totalProfit)}! Your balance is now ${portfolio.balance}`);
+        return msg.reply(`You sold ${amount} of your shares of ${stockInfo.name} for \$${totalPrice.toFixed(2)}. You made a ${totalProfit < 0 ? 'loss' : 'profit'} of \$${Math.abs(totalProfit).toFixed(2)}! Your balance is now \$${portfolio.balance.toFixed(2)}`);
     }
 }
 
