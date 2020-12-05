@@ -42,25 +42,13 @@ const command: Command = {
             totalProfit += (stockInfo.currentPrice - stock.buyPrice);
         });
 
-        const verifyMsg = await msg.reply(`Sell ${amount} of your shares of ${stockInfo.name}? You will make a ${totalProfit < 0 ? 'loss' : 'profit'} of \$${Math.abs(totalProfit)}. (✅: Yes, ❎: No)`);
-        await Promise.all([verifyMsg.react('✅'), verifyMsg.react('❎')]);
-        const filter = (reaction: MessageReaction, user: User) => (reaction.emoji.name === '❎' || reaction.emoji.name ==='✅') && user.id === msg.author.id;
-        const r = await verifyMsg.awaitReactions(filter, { time: 15000, max: 1 });
-        if (!r.has('❎') && !r.has('✅')) {
-            verifyMsg.edit(`~~${verifyMsg.content}~~ Timed out.`);
-            await client.later(5000);
-            verifyMsg.delete();
-            msg.delete();
-            return;
-        } else if (r.has('❎')) {
-            verifyMsg.edit(`~~${verifyMsg.content}~~ Cancelled.`);
-            await client.later(5000);
-            verifyMsg.delete();
-            msg.delete();
-            return;
-        }
+        const verify = await client.userConfirmation({
+            msg: msg,
+            text: `Sell ${amount} of your shares of ${stockInfo.name}? You will make a ${totalProfit < 0 ? 'loss' : 'profit'} of \$${Math.abs(totalProfit).toFixed(2)}.`,
+            timer: 15000
+        });
 
-        verifyMsg.delete();
+        if (!verify) return;
         
         for (let i = 0; i < amount; i++) {
             const stock = portfolio.stocks[indexes[0]];
