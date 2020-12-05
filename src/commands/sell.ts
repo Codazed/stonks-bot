@@ -1,5 +1,6 @@
 import { MessageReaction, User } from 'discord.js';
 import { Command } from '../commands';
+import { StockInfo } from '../types';
 
 const { lookup } = require('yahoo-stocks');
 
@@ -75,17 +76,6 @@ const command: Command = {
         client.savePortfolio(user.id, portfolio);
         return msg.reply(`You sold ${amount} of your shares of ${stockInfo.name} for \$${totalPrice}. You made a ${totalProfit < 0 ? 'loss' : 'profit'} of \$${Math.abs(totalProfit)}! Your balance is now ${portfolio.balance}`);
     }
-}
-
-interface StockInfo {
-    symbol: string;
-    name: string;
-    exchange: string;
-    currentPrice: number;
-    highPrice: number;
-    lowPrice: number;
-    meanPrice: number;
-    medianPrice: number;
 }
 
 export default command;
