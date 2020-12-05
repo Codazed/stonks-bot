@@ -1,4 +1,4 @@
-import { Client, Collection } from 'discord.js';
+import { Client, Collection, Message, MessageReaction, User } from 'discord.js';
 import { Handler } from './commands';
 import { readdirSync } from 'fs-extra';
 import path from 'path';
@@ -42,6 +42,28 @@ export class Stonks {
         const db = mongo.db(process.env.MONGO_DB);
         await db.collection('portfolios').replaceOne({'_id': userId}, portfolioData);
         mongo.close();
+    }
+
+    async userConfirmation({msg, text, timer}: {msg: Message, text: string, timer: number}): Promise<boolean> {
+        const verifyMsg = await msg.reply(text + ' (✅: Yes, ❎: No)');
+        await Promise.all([verifyMsg.react('✅'), verifyMsg.react('❎')]);
+        const filter = (reaction: MessageReaction, user: User) => (reaction.emoji.name === '❎' || reaction.emoji.name ==='✅') && user.id === msg.author.id;
+        const r = await verifyMsg.awaitReactions(filter, { time: timer, max: 1 });
+        if (!r.has('❎') && !r.has('✅')) {
+            verifyMsg.edit(`~~${verifyMsg.content}~~ Timed out.`);
+            await this.later(5000);
+            verifyMsg.delete();
+            msg.delete().catch(error => {});    // TODO: Handle user message deletion error
+            return false;
+        } else if (r.has('❎')) {
+            verifyMsg.edit(`~~${verifyMsg.content}~~ Cancelled.`);
+            await this.later(5000);
+            verifyMsg.delete();
+            msg.delete().catch(error => {});    // TODO: Handle user message deletion error
+            return false;
+        }
+        verifyMsg.delete();
+        return true;
     }
 
     async go() {
