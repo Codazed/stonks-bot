@@ -2,9 +2,9 @@
 A Discord bot that allows you to play with the stock market
 
 ## Table of Contents
-1. [Prerequisites](#prerequisites)
-2. [Usage](#usage)
-3. [License](#license)
+- [Prerequisites](#prerequisites)
+- [Usage](#usage)
+- [License](#license)
 
 
 ## Prerequisites
@@ -13,7 +13,7 @@ A Discord bot that allows you to play with the stock market
 - MongoDB server
 
 To complete the bot's setup, create a `.env` file in the project root directory with the following values:
-```env
+```
 BOT_TOKEN=<Discord Bot Token>
 PREFIX=<The desired command prefix>
 MONGO_HOST=<Hostname/IP of the MongoDB server>
@@ -32,7 +32,7 @@ The following is the command reference for the bot (subject to change):
 
 - `$start`:
 
-  This command creates a portfolio for the user who runs it. The bot will not work for users who don't run this command
+  This command creates a portfolio for the user who runs it. The bot will not work for users who don't run this command. For now, this will create a portfolio with a start of $1000.  
 
 - `$profile`:
 
@@ -52,4 +52,4 @@ The following is the command reference for the bot (subject to change):
 
 
 ## License
-Like most of my other projects, Stonks Bot is licensed under the GNU GPL 3.0 license. See [LICENSE](LICENSE) for more information.
+Like most of my other projects, Stonks Bot is licensed under the GNU GPL 3.0 license. This basically means you're free to do whatever you want with the code, including using it for commercial use, but you have to disclose the source and keep the same license. See [LICENSE](LICENSE) for more information.
