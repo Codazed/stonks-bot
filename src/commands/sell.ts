@@ -53,7 +53,6 @@ const command: Command = {
         for (let i = 0; i < amount; i++) {
             const stock = portfolio.stocks[indexes[0]];
             stock.amount -= 1;
-            // totalProfit += (stockInfo.currentPrice - stock.buyPrice);
             if (stock.amount <= 0) {
                 indexes.shift();
             }
